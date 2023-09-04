@@ -24,27 +24,20 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string']
+            
         ]);
-        if ($request->role == 'admin') {
-            $status = 1;
-        } else {
-            $status = 0;
-        }
+        
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
-            'status' => $status,
+            'role' => 'delala',
+            'status' => 0,
             'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
-        if ($request->role == 'admin') {
-            Auth::login($user);
-
-        }
+      
 
 
         return response()->noContent();
