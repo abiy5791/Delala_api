@@ -6,14 +6,27 @@ use App\Models\others;
 use App\Http\Requests\StoreothersRequest;
 use App\Http\Requests\UpdateothersRequest;
 
+use Illuminate\Http\Request;
+
 class OthersController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $images = $request->file('image');
+        $imageName = '';
+
+        foreach ($images as $image) {
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/uploads/images'), $new_name);
+            $imageName = $imageName . $new_name . ",";
+        }
+        $imagedb = $imageName;
+        return response()->json($imagedb);
+
+
     }
 
     /**
@@ -29,7 +42,16 @@ class OthersController extends Controller
      */
     public function store(StoreothersRequest $request)
     {
-        //
+        $images = $request->file('image');
+        $imageName = '';
+
+        foreach ($images as $image) {
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/uploads/images'), $new_name);
+            $imageName = $imageName . $new_name . ",";
+        }
+        $imagedb = $imageName;
+        return response()->json($imagedb);
     }
 
     /**

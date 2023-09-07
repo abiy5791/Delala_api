@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\admincontroller;
+use App\Http\Controllers\OthersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\middleware\AdminAccessMiddleWare;
@@ -19,6 +20,8 @@ use App\Http\middleware\AdminAccessMiddleWare;
 // Route::get('/users' , [admincontroller::class,'index']);
 // Route::get('/users/:id', [admincontroller::class,'show']);
 Route::resource('users',admincontroller::class);
+Route::post('media',[OthersController::class,'index']);
+
 
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
