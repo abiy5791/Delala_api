@@ -6,7 +6,6 @@ use App\Models\house;
 use App\Http\Requests\StorehouseRequest;
 use App\Http\Requests\UpdatehouseRequest;
 use Illuminate\Http\Request;
-use App\Models\media;
 
 class HouseController extends Controller
 {
@@ -15,7 +14,7 @@ class HouseController extends Controller
      */
     public function index()
     {
-        //
+        return house::all();
     }
 
     /**
@@ -23,23 +22,29 @@ class HouseController extends Controller
      */
     public function create(Request $request)
     {
-        $images = $request->file('image');
-        $imagePaths = [];
-
-        foreach ($images as $image) {
-            $newName = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('/uploads/images'), $newName);
-
-            // Store the full path in the array
-            $imagePaths[] = public_path('/uploads/images') . '/' . $newName;
-
+        $image = array();
+        if ($files = $request->file('image')) {
+            foreach ($files as $file) {
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $upload_path = 'uploads/images/';
+                $image_url = $upload_path . $image_full_name;
+                $file->move($upload_path, $image_full_name);
+                $image[] = $image_url;
+            }
         }
-        foreach ($imagePaths as $imagepath) {
-            $UploadImage = media::create(['path' => $imagepath]);
-        }
-        // $imagePaths now contains the full paths of the uploaded images
-        $uploadHouse = house::create($request->except("image"));
-        return response()->json($uploadHouse);
+        $insertcar = house::create([
+            'title' => $request->title,
+            'delala_id' => $request->delala_id,
+            'status' => $request->status,
+            'price' => $request->price,
+            'area' => $request->area,
+            'location' => $request->location,
+            'details' => $request->details,
+            'image' => implode('|', $image)
+        ]);
+        return response()->json($request);
 
     }
 

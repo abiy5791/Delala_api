@@ -16,13 +16,12 @@ return new class extends Migration {
             $table->unsignedBigInteger('delala_id');
             $table->foreign('delala_id')->references('id')->on('users')->onDelete("cascade");
             $table->string('status');
-            $table->boolean('approval');
+            $table->boolean('approval')->default(0);
             $table->double('price');
             $table->double('area');
             $table->string('location');
             $table->string('details');
-            $table->unsignedBigInteger('media_id');
-            $table->foreign('media_id')->references('id')->on('media')->onDelete("cascade");
+            $table->string('image');
             $table->timestamps();
         });
     }

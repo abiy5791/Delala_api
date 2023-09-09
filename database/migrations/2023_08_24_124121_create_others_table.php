@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->foreign('delala_id')->references('id')->on('users')->onDelete("cascade");
             $table->string('title');
             $table->double('price');
+            $table->boolean('approval')->default(0);
+            $table->string('image');
             $table->string('details');
-            $table->unsignedBigInteger('media_id');
-            $table->foreign('media_id')->references('id')->on('media')->onDelete("cascade");
             $table->timestamps();
         });
     }

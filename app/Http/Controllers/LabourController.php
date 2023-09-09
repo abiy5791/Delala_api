@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\labour;
 use App\Http\Requests\StorelabourRequest;
 use App\Http\Requests\UpdatelabourRequest;
+use Illuminate\Http\Request;
 
 class LabourController extends Controller
 {
@@ -13,15 +14,38 @@ class LabourController extends Controller
      */
     public function index()
     {
-        //
+        return labour::all();
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $image = array();
+        if ($files = $request->file('image')) {
+            foreach ($files as $file) {
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name . '.' . $ext;
+                $upload_path = 'uploads/images/';
+                $image_url = $upload_path . $image_full_name;
+                $file->move($upload_path, $image_full_name);
+                $image[] = $image_url;
+            }
+        }
+        $insertlabour = labour::create([
+            'title' => $request->title,
+            'delala_id' => $request->delala_id,
+            'name' => $request->name,
+            'skills' => $request->skills,
+            'type' => $request->type,
+            'salary' => $request->salary,
+            'details' => $request->details,
+            'image' => implode('|', $image)
+        ]);
+        return response()->json($request);
+
     }
 
     /**
