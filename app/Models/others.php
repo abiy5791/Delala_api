@@ -14,5 +14,6 @@ class others extends Model
         'image',
         'details',
         'price',
+        'approval',
     ];
 }

@@ -20,5 +20,6 @@ class car extends Model
         'price',
         'details',
         'image',
+        'approval',
     ];
 }

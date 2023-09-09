@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\house;
-use App\Http\Requests\StorehouseRequest;
-use App\Http\Requests\UpdatehouseRequest;
 use Illuminate\Http\Request;
 
 class HouseController extends Controller
@@ -21,6 +19,15 @@ class HouseController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
+    {
+
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
         $image = array();
         if ($files = $request->file('image')) {
@@ -45,24 +52,14 @@ class HouseController extends Controller
             'image' => implode('|', $image)
         ]);
         return response()->json($request);
-
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorehouseRequest $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(house $house)
+    public function show(string $id)
     {
-        //
+        return house::find($id);
     }
 
     /**
@@ -76,16 +73,18 @@ class HouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatehouseRequest $request, house $house)
+    public function update(Request $request, string $id)
     {
-        //
+        $house = house::find($id);
+        $house->update($request->all());
+        return $house;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(house $house)
+    public function destroy(string $id)
     {
-        //
+        return house::destroy($id);
     }
 }

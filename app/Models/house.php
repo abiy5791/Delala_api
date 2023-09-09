@@ -17,5 +17,6 @@ class house extends Model
         'area',
         'price',
         'status',
+        'approval',
     ];
 }

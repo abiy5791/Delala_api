@@ -17,6 +17,7 @@ class labour extends Model
         'skills',
         'type',
         'salary',
+        'approval',
 
     ];
 }

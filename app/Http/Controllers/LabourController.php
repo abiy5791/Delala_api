@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\labour;
-use App\Http\Requests\StorelabourRequest;
-use App\Http\Requests\UpdatelabourRequest;
+
 use Illuminate\Http\Request;
 
 class LabourController extends Controller
@@ -21,6 +20,14 @@ class LabourController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
         $image = array();
         if ($files = $request->file('image')) {
@@ -45,25 +52,15 @@ class LabourController extends Controller
             'image' => implode('|', $image)
         ]);
         return response()->json($request);
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorelabourRequest $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(labour $labour)
+    public function show(string $id)
     {
-        //
+        return labour::find($id);
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -75,16 +72,17 @@ class LabourController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatelabourRequest $request, labour $labour)
+    public function update(Request $request, string $id)
     {
-        //
+        $labour = labour::find($id);
+        $labour->update($request->all());
+        return $labour;
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(labour $labour)
+    public function destroy(string $id)
     {
-        //
+        return labour::destroy($id);
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\others;
-use App\Http\Requests\StoreothersRequest;
-use App\Http\Requests\UpdateothersRequest;
 use Illuminate\Http\Request;
 
 class OthersController extends Controller
@@ -21,6 +19,13 @@ class OthersController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
+    {
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
         $image = array();
         if ($files = $request->file('image')) {
@@ -42,22 +47,15 @@ class OthersController extends Controller
             'image' => implode('|', $image)
         ]);
         return response()->json($request);
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreothersRequest $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(others $others)
+    public function show(string $id)
     {
-        //
+        return others::find($id);
     }
 
     /**
@@ -71,16 +69,18 @@ class OthersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateothersRequest $request, others $others)
+    public function update(Request $request, string $id)
     {
-        //
+        $others = others::find($id);
+        $others->update($request->all());
+        return $others;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(others $others)
+    public function destroy(string $id)
     {
-        //
+        return others::destroy($id);
     }
 }
