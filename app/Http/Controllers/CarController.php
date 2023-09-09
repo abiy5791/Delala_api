@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\car;
 use Illuminate\Http\Request;
-use App\Http\Requests\StorecarRequest;
-use App\Http\Requests\UpdatecarRequest;
 
 class CarController extends Controller
 {
@@ -22,12 +20,13 @@ class CarController extends Controller
      */
     public function create(Request $request)
     {
-        // $array = array();
-        // if ($request->file('image')) {
-        //     foreach ($request->file('image') as $aa) {
-        //         array_push($array, $aa->toArray());
-        //     }
-        // }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
         $image = array();
         if ($files = $request->file('image')) {
             foreach ($files as $file) {
@@ -54,22 +53,15 @@ class CarController extends Controller
             'image' => implode('|', $image)
         ]);
         return response()->json($request);
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorecarRequest $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(car $car)
+    public function show(string $id)
     {
-        //
+        return car::find($id);
     }
 
     /**
@@ -83,16 +75,18 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatecarRequest $request, car $car)
+    public function update(Request $request, string $id)
     {
-        //
+        $car = car::find($id);
+        $car->update($request->all());
+        return $car;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(car $car)
+    public function destroy(string $id)
     {
-        //
+        return car::destroy($id);
     }
 }

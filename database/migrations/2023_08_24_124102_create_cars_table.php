@@ -24,8 +24,7 @@ return new class extends Migration {
             $table->double('price');
             $table->string('details');
             $table->string('image');
-            // $table->unsignedBigInteger('media_id');
-            // $table->foreign('media_id')->references('id')->on('media')->onDelete("cascade");
+            $table->boolean('approval')->default(0);
             $table->timestamps();
         });
     }
