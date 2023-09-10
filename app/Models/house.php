@@ -11,13 +11,12 @@ class house extends Model
     protected $fillable = [
         'title',
         'delala_id',
-        'media_id',
+        'image',
         'details',
         'location',
         'area',
         'price',
-        'approval',
         'status',
-
+        'approval',
     ];
 }
