@@ -20,8 +20,8 @@ return new class extends Migration {
             $table->string('type');
             $table->double('salary');
             $table->string('details');
-            $table->unsignedBigInteger('media_id');
-            $table->foreign('media_id')->references('id')->on('media')->onDelete("cascade");
+            $table->string('image');
+            $table->boolean('approval')->default(0);
             $table->timestamps();
         });
     }

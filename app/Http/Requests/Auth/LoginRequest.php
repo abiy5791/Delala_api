@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
-           
+
         ];
     }
 
@@ -44,7 +44,11 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
         $email = $this->only('email');
         $user = $this->findtheuser($email);
-
+        if ($user == null) {
+            throw ValidationException::withMessages([
+                'email_password_error' => 'The email or password is not correct !',
+            ]);
+        }
 
         if ($user->status == 1) {
             if (!Auth::attempt($this->only('email', 'password', 'role'), $this->boolean('remember'))) {

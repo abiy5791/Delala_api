@@ -6,8 +6,6 @@ use App\Models\others;
 use App\Http\Requests\StoreothersRequest;
 use App\Http\Requests\UpdateothersRequest;
 
-use Illuminate\Http\Request;
-
 class OthersController extends Controller
 {
     /**
@@ -15,26 +13,14 @@ class OthersController extends Controller
      */
     public function index(Request $request)
     {
-        $images = $request->file('image');
-        $imageName = '';
-
-        foreach ($images as $image) {
-            $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('/uploads/images'), $new_name);
-            $imageName = $imageName . $new_name . ",";
-        }
-        $imagedb = $imageName;
-        return response()->json($imagedb);
-
-
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
     }
 
     /**
@@ -42,24 +28,15 @@ class OthersController extends Controller
      */
     public function store(StoreothersRequest $request)
     {
-        $images = $request->file('image');
-        $imageName = '';
-
-        foreach ($images as $image) {
-            $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('/uploads/images'), $new_name);
-            $imageName = $imageName . $new_name . ",";
-        }
-        $imagedb = $imageName;
-        return response()->json($imagedb);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(others $others)
+    public function show(string $id)
     {
-        //
+        return others::find($id);
     }
 
     /**
@@ -73,16 +50,18 @@ class OthersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateothersRequest $request, others $others)
+    public function update(Request $request, string $id)
     {
-        //
+        $others = others::find($id);
+        $others->update($request->all());
+        return $others;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(others $others)
+    public function destroy(string $id)
     {
-        //
+        return others::destroy($id);
     }
 }
