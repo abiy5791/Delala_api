@@ -26,7 +26,18 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
 
         ]);
+        
+        $avatar = $request->file('avatar');
+        $avatar_full_name = md5(rand(1000, 10000)) . '.' . strtolower($avatar->getClientOriginalExtension());
+        $upload_path = 'uploads/avatar/';
+        $avatar->move($upload_path, $avatar_full_name);
+        $avatar_url = $upload_path . $avatar_full_name;
 
+        $kebelleId = $request->file('kebelleId');
+        $kebelleId_full_name = md5(rand(1000, 10000)) . '.' . strtolower($kebelleId->getClientOriginalExtension());
+        $upload_path = 'uploads/identification/';
+        $kebelleId->move($upload_path, $kebelleId_full_name);
+        $kebelleId_url = $upload_path . $kebelleId_full_name;
 
         $user = User::create([
             'name' => $request->name,
@@ -34,6 +45,10 @@ class RegisteredUserController extends Controller
             'role' => 'delala',
             'status' => 0,
             'password' => Hash::make($request->password),
+            'avatar' => $avatar_url,
+            'kebelleId' => $kebelleId_url,
+            'address' => $request->address,
+            'phone' => $request->phone,
         ]);
 
         event(new Registered($user));
