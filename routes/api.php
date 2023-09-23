@@ -8,6 +8,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\LabourController;
 use App\Http\Controllers\OthersController;
+use App\Http\Controllers\PropertyController;
 
 
 /*
@@ -43,6 +44,7 @@ Route::resource('car', CarController::class);
 Route::resource('house', HouseController::class);
 Route::resource('labour', LabourController::class);
 Route::resource('other', OthersController::class);
+Route::resource('prop', PropertyController::class);
 
 
 Route::resource('users', admincontroller::class);

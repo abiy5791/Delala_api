@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->double('salary');
             $table->string('details');
             $table->string('image');
+            $table->string('Gender');
+            $table->double('age');
             $table->boolean('approval')->default(0);
             $table->timestamps();
         });

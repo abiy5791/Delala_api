@@ -18,6 +18,8 @@ class labour extends Model
         'type',
         'salary',
         'approval',
+        'age',
+        'Gender',
 
     ];
 }
