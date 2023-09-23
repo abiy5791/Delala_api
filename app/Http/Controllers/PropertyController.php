@@ -16,15 +16,33 @@ class PropertyController extends Controller
     public function index()
 
     {
-        $labour = labour::all();
-        $car = car::all();
-        $house = house::all();
-        $others = others::all();
+        $cars = car::where('approval', 1)->get();
+        $houses = house::where('approval', 1)->get();
+        $others = others::where('approval', 1)->get();
+        $labours = labour::where('approval', 1)->get();
         $mergedData = collect();
+        
+        $cars = $cars->map(function ($car) {
+            $car['model_type'] = 'car';
+            return $car;
+        });
+        $houses = $houses->map(function ($house) {
+            $house['model_type'] = 'house';
+            return $house;
+        });
+        $labours = $labours->map(function ($labour) {
+            $labour['model_type'] = 'labour';
+            return $labour;
+        });
+        $others = $others->map(function ($other) {
+            $other['model_type'] = 'other';
+            return $other;
+        });
+       
 
-        $mergedData = $mergedData->concat($labour);
-        $mergedData = $mergedData->concat($car);
-        $mergedData = $mergedData->concat($house);
+        $mergedData = $mergedData->concat($labours);
+        $mergedData = $mergedData->concat($cars);
+        $mergedData = $mergedData->concat($houses);
         $mergedData = $mergedData->concat($others);
         return $mergedData;
     }

@@ -48,6 +48,8 @@ class LabourController extends Controller
             'skills' => $request->skills,
             'type' => $request->type,
             'salary' => $request->salary,
+            'Gender' => $request->Gender,
+            'age' => $request->age,
             'details' => $request->details,
             'image' => implode('|', $image)
         ]);
