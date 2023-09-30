@@ -28,10 +28,15 @@ class RegisteredUserController extends Controller
         ]);
         
         $avatar = $request->file('avatar');
-        $avatar_full_name = md5(rand(1000, 10000)) . '.' . strtolower($avatar->getClientOriginalExtension());
-        $upload_path = 'uploads/avatar/';
-        $avatar->move($upload_path, $avatar_full_name);
-        $avatar_url = $upload_path . $avatar_full_name;
+        if (empty($avatar)){
+            $avatar_url = null;
+        }else{
+            $avatar_full_name = md5(rand(1000, 10000)) . '.' . strtolower($avatar->getClientOriginalExtension());
+            $upload_path = 'uploads/avatar/';
+            $avatar->move($upload_path, $avatar_full_name);
+            $avatar_url = $upload_path . $avatar_full_name;
+        }
+       
 
         $kebelleId = $request->file('kebelleId');
         $kebelleId_full_name = md5(rand(1000, 10000)) . '.' . strtolower($kebelleId->getClientOriginalExtension());
