@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\car;
 use App\Models\house;
 use App\Models\labour;
@@ -14,14 +15,13 @@ class PropertyController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-
     {
         $cars = car::where('approval', 1)->get();
         $houses = house::where('approval', 1)->get();
         $others = others::where('approval', 1)->get();
         $labours = labour::where('approval', 1)->get();
         $mergedData = collect();
-        
+
         $cars = $cars->map(function ($car) {
             $car['model_type'] = 'car';
             return $car;
@@ -38,13 +38,20 @@ class PropertyController extends Controller
             $other['model_type'] = 'other';
             return $other;
         });
-       
 
-        $mergedData = $mergedData->concat($labours);
-        $mergedData = $mergedData->concat($cars);
-        $mergedData = $mergedData->concat($houses);
-        $mergedData = $mergedData->concat($others);
-        return $mergedData;
+
+        // $mergedData = $mergedData->concat($labours);
+        // $mergedData = $mergedData->concat($cars);
+        // $mergedData = $mergedData->concat($houses);
+        // $mergedData = $mergedData->concat($others);
+
+        $mergedData = $labours
+            ->concat($cars)
+            ->concat($houses)
+            ->concat($others)
+            ->sortByDesc('created_at');
+
+        return $mergedData->values()->all();
     }
 
     /**
