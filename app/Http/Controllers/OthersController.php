@@ -27,6 +27,7 @@ class OthersController extends Controller
      */
     public function store(Request $request)
     {
+
         $image = array();
         if ($files = $request->file('image')) {
             foreach ($files as $file) {
@@ -71,9 +72,41 @@ class OthersController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $others = others::find($id);
-        $others->update($request->all());
-        return $others;
+        if ($request->has('approval')) {
+            $house = others::find($id);
+            $house->update($request->all());
+            return response()->json($request);
+        } else {
+            $image = array();
+            if ($files = $request->file('image')) {
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1000, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name . '.' . $ext;
+                    $upload_path = 'uploads/images/';
+                    $image_url = $upload_path . $image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    $image[] = $image_url;
+                }
+            }
+
+            // Find the car object to update
+            $other = others::find($id); // Replace $id with the ID of the car to update
+            $other->title = $request->title;
+
+            $other->price = $request->price;
+            $other->details = $request->details;
+            if (!empty($image)) {
+                $other->image = implode('|', $image);
+            }
+
+
+            // Save the updated car object
+            $other->save();
+
+            return response()->json($request);
+
+        }
     }
 
     /**

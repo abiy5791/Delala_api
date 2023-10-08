@@ -19,6 +19,10 @@ return new class extends Migration {
             $table->boolean('approval')->default(0);
             $table->double('price');
             $table->double('area');
+            $table->integer('bathrooms');
+            $table->integer('bedrooms');
+            $table->integer('parking');
+            $table->string('type');
             $table->string('location');
             $table->string('details');
             $table->string('image');

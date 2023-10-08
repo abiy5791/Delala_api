@@ -18,6 +18,10 @@ class house extends Model
         'details',
         'image',
         'approval',
-        
+        'parking',
+        'bathrooms',
+        'bedrooms',
+        'type',
+
     ];
 }

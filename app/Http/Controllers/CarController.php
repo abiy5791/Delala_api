@@ -77,9 +77,49 @@ class CarController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $car = car::find($id);
-        $car->update($request->all());
-        return $car;
+        if ($request->has('approval')) {
+            $house = car::find($id);
+            $house->update($request->all());
+            return response()->json($request);
+        } else {
+            $image = array();
+            if ($files = $request->file('image')) {
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1000, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name . '.' . $ext;
+                    $upload_path = 'uploads/images/';
+                    $image_url = $upload_path . $image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    $image[] = $image_url;
+                }
+            }
+
+            // Find the car object to update
+            $car = car::find($id); // Replace $id with the ID of the car to update
+
+            // Update the car object with the new values
+            $car->title = $request->title;
+            $car->make = $request->make;
+            // $car->delala_id = $request->delala_id;
+            $car->model = $request->model;
+            $car->year = $request->year;
+            $car->mileage = $request->mileage;
+            $car->fueltype = $request->fueltype;
+            $car->color = $request->color;
+            $car->price = $request->price;
+            $car->details = $request->details;
+            if (!empty($image)) {
+                $car->image = implode('|', $image);
+            }
+
+
+            // Save the updated car object
+            $car->save();
+
+            return response()->json($request);
+        }
+
     }
 
     /**

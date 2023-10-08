@@ -76,9 +76,45 @@ class LabourController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $labour = labour::find($id);
-        $labour->update($request->all());
-        return $labour;
+        if ($request->has('approval')) {
+            $house = labour::find($id);
+            $house->update($request->all());
+            return response()->json($request);
+        } else {
+            $image = array();
+            if ($files = $request->file('image')) {
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1000, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name . '.' . $ext;
+                    $upload_path = 'uploads/images/';
+                    $image_url = $upload_path . $image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    $image[] = $image_url;
+                }
+            }
+
+            // Find the car object to update
+            $labour = labour::find($id); // Replace $id with the ID of the car to update
+            $labour->title = $request->title;
+            $labour->name = $request->name;
+            $labour->skills = $request->skills;
+            $labour->type = $request->type;
+            $labour->salary = $request->salary;
+            $labour->Gender = $request->Gender;
+            $labour->age = $request->age;
+            $labour->details = $request->details;
+            if (!empty($image)) {
+                $labour->image = implode('|', $image);
+            }
+
+
+            // Save the updated car object
+            $labour->save();
+
+            return response()->json($request);
+        }
+
     }
     /**
      * Remove the specified resource from storage.

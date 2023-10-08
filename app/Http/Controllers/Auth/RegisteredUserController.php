@@ -26,17 +26,17 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
 
         ]);
-        
+
         $avatar = $request->file('avatar');
-        if (empty($avatar)){
+        if (empty($avatar)) {
             $avatar_url = null;
-        }else{
+        } else {
             $avatar_full_name = md5(rand(1000, 10000)) . '.' . strtolower($avatar->getClientOriginalExtension());
             $upload_path = 'uploads/avatar/';
             $avatar->move($upload_path, $avatar_full_name);
             $avatar_url = $upload_path . $avatar_full_name;
         }
-       
+
 
         $kebelleId = $request->file('kebelleId');
         $kebelleId_full_name = md5(rand(1000, 10000)) . '.' . strtolower($kebelleId->getClientOriginalExtension());
